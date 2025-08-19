@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, ArrowUpDown, Settings } from 'lucide-react';
 import type { Token } from '../types/web3';
+import { useTokenOperations } from '../hooks/useTokenOperations';
+import { ethers } from 'ethers';
 
 interface SwapModalProps {
   isOpen: boolean;
@@ -14,21 +16,36 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
   const [fromAmount, setFromAmount] = useState('');
   const [toAmount, setToAmount] = useState('');
   const [slippage, setSlippage] = useState('0.5');
-  const [isLoading, setIsLoading] = useState(false);
+  const { swapTokens, getSwapQuote, isLoading, error } = useTokenOperations();
 
   if (!isOpen) return null;
 
   const handleSwap = async () => {
     if (!fromAmount) return;
     
-    setIsLoading(true);
-    
-    // Simulate swap
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const fromToken = allTokens.find(t => t.symbol === fromToken);
+      const toToken = allTokens.find(t => t.symbol === toToken);
+      
+      const fromAddress = fromToken?.symbol === 'ETH' ? 'ETH' : fromToken?.address || '';
+      const toAddress = toToken?.symbol === 'ETH' ? 'ETH' : toToken?.address || '';
+      
+      const slippageAmount = (parseFloat(toAmount) * (1 - parseFloat(slippage) / 100)).toString();
+      
+      const txHash = await swapTokens(
+        fromAddress,
+        toAddress,
+        fromAmount,
+        slippageAmount,
+        fromToken?.decimals || 18,
+        toToken?.decimals || 18
+      );
+      
+      alert(`Swap completed! Hash: ${txHash}`);
       onClose();
-      alert('Swap completed! (This is a demo)');
-    }, 2000);
+    } catch (error: any) {
+      alert(`Swap failed: ${error.message}`);
+    }
   };
 
   const flipTokens = () => {
@@ -40,11 +57,37 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
 
   // Simulate price calculation
   React.useEffect(() => {
-    if (fromAmount) {
-      const rate = fromToken === 'ETH' ? 2000 : 0.0005; // Mock rates
-      setToAmount((parseFloat(fromAmount) * rate).toFixed(6));
+    if (fromAmount && fromToken !== toToken) {
+      const getQuote = async () => {
+        try {
+          const fromTokenData = allTokens.find(t => t.symbol === fromToken);
+          const toTokenData = allTokens.find(t => t.symbol === toToken);
+          
+          const fromAddress = fromTokenData?.symbol === 'ETH' ? 'ETH' : fromTokenData?.address || '';
+          const toAddress = toTokenData?.symbol === 'ETH' ? 'ETH' : toTokenData?.address || '';
+          
+          const quote = await getSwapQuote(
+            fromAddress,
+            toAddress,
+            fromAmount,
+            fromTokenData?.decimals || 18
+          );
+          
+          if (quote) {
+            const formattedQuote = ethers.formatUnits(quote, toTokenData?.decimals || 18);
+            setToAmount(parseFloat(formattedQuote).toFixed(6));
+          }
+        } catch (error) {
+          console.error('Error getting quote:', error);
+          // Fallback to mock calculation
+          const rate = fromToken === 'ETH' ? 2000 : 0.0005;
+          setToAmount((parseFloat(fromAmount) * rate).toFixed(6));
+        }
+      };
+      
+      getQuote();
     }
-  }, [fromAmount, fromToken]);
+  }, [fromAmount, fromToken, toToken, allTokens, getSwapQuote]);
 
   const allTokens = [{ symbol: 'ETH', name: 'Ethereum', balance: '1.5' }, ...tokens];
 
@@ -138,6 +181,18 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
           </div>
           
           {/* Swap Details */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-2 text-sm">
+              <div className="flex gap-3">
+                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+                <div className="text-red-800">
+                  <p className="font-medium">Swap Error</p>
+                  <p>{error}</p>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {fromAmount && (
             <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm border border-gray-200">
               <div className="flex justify-between text-gray-700">

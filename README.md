@@ -245,8 +245,39 @@ Mock token data is configured in the `loadTokens` function. For production, inte
 
 ## 🧪 Testing
 
+### Smart Contract Testing
+
+The application includes comprehensive tests for smart contract integration:
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+**Test Coverage:**
+- ERC20 token contract interactions
+- Uniswap V2 router integration
+- Network configuration validation
+- Token balance and transfer operations
+- Swap quote calculations
+
 ### Manual Testing Checklist
 
+**Testnet Testing:**
+- [ ] Connect to Sepolia testnet
+- [ ] Get testnet ETH from faucet
+- [ ] Load testnet token balances
+- [ ] Send testnet ETH transaction
+- [ ] Approve and swap testnet tokens
+- [ ] View real transaction history
+
+**Mainnet Testing (with caution):**
 - [ ] Wallet connection/disconnection
 - [ ] Network switching functionality
 - [ ] Balance updates and display
@@ -257,15 +288,24 @@ Mock token data is configured in the `loadTokens` function. For production, inte
 - [ ] Responsive design testing
 - [ ] Error handling scenarios
 
-### Automated Testing (Future Enhancement)
+### Testnet Configuration
 
-```bash
-# Install testing dependencies
-npm install --save-dev vitest @testing-library/react
+The application supports multiple testnets:
 
-# Run tests
-npm run test
-```
+**Sepolia Testnet (Ethereum)**
+- Chain ID: 11155111
+- Faucets: sepoliafaucet.com, faucet.sepolia.dev
+- Test tokens: USDC, DAI, LINK
+
+**Mumbai Testnet (Polygon)**
+- Chain ID: 80001
+- Faucets: faucet.polygon.technology
+- Test tokens: USDC, DAI, WMATIC
+
+**BSC Testnet**
+- Chain ID: 97
+- Faucets: testnet.binance.org/faucet-smart
+- Test tokens: USDT, BUSD, CAKE
 
 ## 🚀 Deployment
 

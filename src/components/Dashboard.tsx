@@ -5,6 +5,8 @@ import { TokenList } from './TokenList';
 import { TransactionHistory } from './TransactionHistory';
 import { SendModal } from './SendModal';
 import { SwapModal } from './SwapModal';
+import { TestnetFaucet } from './TestnetFaucet';
+import { NetworkStatus } from './NetworkStatus';
 import type { WalletState, Network } from '../types/web3';
 
 interface DashboardProps {
@@ -17,6 +19,8 @@ interface DashboardProps {
 export function Dashboard({ walletState, onDisconnect, onSwitchNetwork, networks }: DashboardProps) {
   const [showSendModal, setShowSendModal] = useState(false);
   const [showSwapModal, setShowSwapModal] = useState(false);
+  
+  const isTestnet = walletState.network && [11155111, 80001, 97].includes(walletState.network.chainId);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -45,9 +49,24 @@ export function Dashboard({ walletState, onDisconnect, onSwitchNetwork, networks
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Assets</h2>
               <TokenList tokens={walletState.tokens} />
+              
+              {/* Testnet Faucet */}
+              {isTestnet && (
+                <div className="mt-6">
+                  <TestnetFaucet 
+                    address={walletState.address!}
+                    network={walletState.network}
+                  />
+                </div>
+              )}
             </div>
             <div>
               <TransactionHistory transactions={walletState.transactions} />
+              
+              {/* Network Status */}
+              <div className="mt-6">
+                <NetworkStatus network={walletState.network} />
+              </div>
             </div>
           </div>
         </div>

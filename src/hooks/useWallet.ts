@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ethers } from 'ethers';
 import type { WalletState, Network, Token, Transaction } from '../types/web3';
+import { ERC20_ABI, TESTNET_TOKENS } from '../contracts/ERC20';
 
 const NETWORKS: Record<number, Network> = {
   1: {
@@ -10,6 +11,13 @@ const NETWORKS: Record<number, Network> = {
     symbol: 'ETH',
     blockExplorer: 'https://etherscan.io'
   },
+  11155111: {
+    chainId: 11155111,
+    name: 'Sepolia Testnet',
+    rpcUrl: 'https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    symbol: 'ETH',
+    blockExplorer: 'https://sepolia.etherscan.io'
+  },
   137: {
     chainId: 137,
     name: 'Polygon',
@@ -17,12 +25,26 @@ const NETWORKS: Record<number, Network> = {
     symbol: 'MATIC',
     blockExplorer: 'https://polygonscan.com'
   },
+  80001: {
+    chainId: 80001,
+    name: 'Mumbai Testnet',
+    rpcUrl: 'https://rpc-mumbai.maticvigil.com',
+    symbol: 'MATIC',
+    blockExplorer: 'https://mumbai.polygonscan.com'
+  },
   56: {
     chainId: 56,
     name: 'BSC',
     rpcUrl: 'https://bsc.llamarpc.com',
     symbol: 'BNB',
     blockExplorer: 'https://bscscan.com'
+  },
+  97: {
+    chainId: 97,
+    name: 'BSC Testnet',
+    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    symbol: 'BNB',
+    blockExplorer: 'https://testnet.bscscan.com'
   }
 };
 
@@ -90,67 +112,100 @@ export function useWallet() {
   }, []);
 
   const loadTokens = async (address: string) => {
-    // Mock token data for demo - in production, you'd fetch from APIs
-    const mockTokens: Token[] = [
-      {
-        address: '0xA0b86a33E6441b8446df7c00F4Bd86C8c7cf74c3',
-        symbol: 'USDC',
-        name: 'USD Coin',
-        decimals: 6,
-        balance: '1250.50'
-      },
-      {
-        address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-        symbol: 'DAI',
-        name: 'Dai Stablecoin',
-        decimals: 18,
-        balance: '890.75'
-      },
-      {
-        address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-        symbol: 'UNI',
-        name: 'Uniswap',
-        decimals: 18,
-        balance: '45.25'
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const network = await provider.getNetwork();
+      const chainId = Number(network.chainId);
+      
+      // Get testnet tokens for current network
+      const networkTokens = TESTNET_TOKENS[chainId as keyof typeof TESTNET_TOKENS];
+      if (!networkTokens) {
+        setWalletState(prev => ({ ...prev, tokens: [] }));
+        return;
       }
-    ];
 
-    setWalletState(prev => ({ ...prev, tokens: mockTokens }));
+      const tokens: Token[] = [];
+      
+      for (const [symbol, tokenAddress] of Object.entries(networkTokens)) {
+        try {
+          const contract = new ethers.Contract(tokenAddress, ERC20_ABI, provider);
+          
+          const [name, decimals, balance] = await Promise.all([
+            contract.name(),
+            contract.decimals(),
+            contract.balanceOf(address)
+          ]);
+          
+          const formattedBalance = ethers.formatUnits(balance, decimals);
+          
+          if (parseFloat(formattedBalance) > 0) {
+            tokens.push({
+              address: tokenAddress,
+              symbol,
+              name,
+              decimals: Number(decimals),
+              balance: formattedBalance
+            });
+          }
+        } catch (error) {
+          console.error(`Error loading token ${symbol}:`, error);
+        }
+      }
+
+      setWalletState(prev => ({ ...prev, tokens }));
+    } catch (error) {
+      console.error('Error loading tokens:', error);
+      setWalletState(prev => ({ ...prev, tokens: [] }));
+    }
   };
 
   const loadTransactions = async (address: string) => {
-    // Mock transaction data for demo
-    const mockTransactions: Transaction[] = [
-      {
-        hash: '0x1234...abcd',
-        from: address,
-        to: '0x742d35Cc6565C9B7cb1E8d6F5D0a7FdB3e3F8B8d',
-        value: '0.5',
-        timestamp: Date.now() - 3600000,
-        status: 'confirmed',
-        type: 'send'
-      },
-      {
-        hash: '0x5678...efgh',
-        from: '0x8ba1f109551bD432803012645Hac136c9c7b5C1C',
-        to: address,
-        value: '1.25',
-        timestamp: Date.now() - 7200000,
-        status: 'confirmed',
-        type: 'receive'
-      },
-      {
-        hash: '0x9abc...ijkl',
-        from: address,
-        to: '0xUniswapV3Router',
-        value: '100',
-        timestamp: Date.now() - 10800000,
-        status: 'confirmed',
-        type: 'swap'
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const network = await provider.getNetwork();
+      
+      // Get recent transactions from the blockchain
+      const latestBlock = await provider.getBlockNumber();
+      const transactions: Transaction[] = [];
+      
+      // Check last 100 blocks for transactions
+      for (let i = 0; i < 100 && transactions.length < 10; i++) {
+        try {
+          const block = await provider.getBlock(latestBlock - i, true);
+          if (block && block.transactions) {
+            for (const tx of block.transactions) {
+              if (typeof tx === 'object' && tx.from && tx.to) {
+                if (tx.from.toLowerCase() === address.toLowerCase() || 
+                    tx.to?.toLowerCase() === address.toLowerCase()) {
+                  
+                  const receipt = await provider.getTransactionReceipt(tx.hash);
+                  
+                  transactions.push({
+                    hash: tx.hash,
+                    from: tx.from,
+                    to: tx.to || '',
+                    value: ethers.formatEther(tx.value || '0'),
+                    timestamp: block.timestamp * 1000,
+                    status: receipt?.status === 1 ? 'confirmed' : 'failed',
+                    type: tx.from.toLowerCase() === address.toLowerCase() ? 'send' : 'receive'
+                  });
+                  
+                  if (transactions.length >= 10) break;
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error(`Error loading block ${latestBlock - i}:`, error);
+        }
       }
-    ];
 
-    setWalletState(prev => ({ ...prev, transactions: mockTransactions }));
+      setWalletState(prev => ({ ...prev, transactions }));
+    } catch (error) {
+      console.error('Error loading transactions:', error);
+      // Fallback to empty array
+      setWalletState(prev => ({ ...prev, transactions: [] }));
+    }
   };
 
   const switchNetwork = async (chainId: number) => {

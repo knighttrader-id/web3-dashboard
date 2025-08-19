@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Send, AlertCircle } from 'lucide-react';
 import type { Network } from '../types/web3';
+import { useTokenOperations } from '../hooks/useTokenOperations';
 
 interface SendModalProps {
   isOpen: boolean;
@@ -13,22 +14,20 @@ export function SendModal({ isOpen, onClose, balance, network }: SendModalProps)
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
   const [gasPrice, setGasPrice] = useState('20');
-  const [isLoading, setIsLoading] = useState(false);
+  const { sendToken, isLoading, error } = useTokenOperations();
 
   if (!isOpen) return null;
 
   const handleSend = async () => {
     if (!recipient || !amount) return;
     
-    setIsLoading(true);
-    
-    // Simulate transaction
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const txHash = await sendToken('ETH', recipient, amount, 18);
+      alert(`Transaction sent! Hash: ${txHash}`);
       onClose();
-      // You would integrate with actual Web3 provider here
-      alert('Transaction submitted! (This is a demo)');
-    }, 2000);
+    } catch (error: any) {
+      alert(`Transaction failed: ${error.message}`);
+    }
   };
 
   const maxBalance = parseFloat(balance) - 0.001; // Reserve for gas
@@ -100,6 +99,18 @@ export function SendModal({ isOpen, onClose, balance, network }: SendModalProps)
           </div>
           
           {/* Warning */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <div className="flex gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-red-800">
+                  <p className="font-medium mb-1">Transaction Error</p>
+                  <p>{error}</p>
+                </div>
+              </div>
+            </div>
+          )}
+          
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
             <div className="flex gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
