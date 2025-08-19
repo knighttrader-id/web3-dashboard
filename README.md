@@ -1,6 +1,6 @@
-# Web3 Dashboard - Complete DeFi Application
+# Web3 Dashboard - Testnet DeFi Application
 
-A modern, production-ready Web3 dashboard built with React, TypeScript, and Ethers.js. This application provides a comprehensive interface for managing cryptocurrency wallets, tokens, and DeFi operations with a beautiful glassmorphism design.
+A modern, production-ready Web3 dashboard built with React, TypeScript, and Ethers.js. This application provides a comprehensive interface for managing cryptocurrency wallets, tokens, and DeFi operations on testnet environments with a clean, professional design.
 
 ![Web3 Dashboard](https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop)
 
@@ -8,33 +8,33 @@ A modern, production-ready Web3 dashboard built with React, TypeScript, and Ethe
 
 ### 🔐 Wallet Management
 - **MetaMask Integration**: Seamless connection with MetaMask browser extension
-- **Multi-Network Support**: Switch between Ethereum, Polygon, and BSC networks
+- **Multi-Testnet Support**: Switch between Sepolia, Manta Pacific, and Lisk testnets
 - **Account Management**: View wallet address, copy to clipboard, and disconnect functionality
 - **Balance Tracking**: Real-time ETH/native token balance updates
 
 ### 💰 Token Portfolio
-- **Token List**: Display all ERC-20 tokens with balances and price changes
-- **Portfolio Overview**: Visual representation of token holdings
-- **Price Tracking**: Mock price data with trending indicators
+- **Token List**: Display ERC-20 tokens with balances and price changes
+- **Portfolio Overview**: Clean table view of token holdings
+- **Real-time Data**: Live blockchain data fetching
 - **Token Details**: Symbol, name, contract address, and decimal information
 
 ### 💸 Transaction Features
-- **Send Tokens**: Transfer ETH or tokens to any address
+- **Send Tokens**: Transfer ETH or tokens to any address with real blockchain transactions
 - **Gas Estimation**: Real-time gas price calculation and fee estimation
-- **Transaction History**: Complete history of sends, receives, and swaps
+- **Transaction History**: Complete history of sends, receives, and swaps from blockchain
 - **Status Tracking**: Pending, confirmed, and failed transaction states
 
 ### 🔄 DeFi Operations
-- **Token Swapping**: Exchange tokens with slippage protection
-- **Liquidity Management**: Interface for DeFi operations
-- **Rate Calculation**: Real-time exchange rate display
-- **Slippage Control**: Customizable slippage tolerance settings
+- **Token Swapping**: Exchange tokens using Uniswap V2 router contracts
+- **Real Price Quotes**: Live exchange rate calculation from DEX
+- **Slippage Protection**: Customizable slippage tolerance settings
+- **Approval Flow**: Proper ERC20 token approval before swaps
 
 ### 🎨 Modern UI/UX
-- **Glassmorphism Design**: Beautiful frosted glass effects with backdrop blur
+- **Clean Professional Design**: White background with structured data tables
 - **Responsive Layout**: Optimized for desktop, tablet, and mobile devices
-- **Dark Theme**: Professional dark interface with neon accents
-- **Smooth Animations**: Micro-interactions and loading states
+- **Financial Interface**: Traditional crypto exchange styling
+- **Smooth Animations**: Loading states and micro-interactions
 - **Accessibility**: WCAG compliant with proper contrast ratios
 
 ## 🛠 Technology Stack
@@ -47,7 +47,7 @@ A modern, production-ready Web3 dashboard built with React, TypeScript, and Ethe
 ### Web3 Integration
 - **Ethers.js v6**: Modern Ethereum library for blockchain interactions
 - **MetaMask Provider**: Browser wallet integration
-- **Multi-Chain Support**: Ethereum, Polygon, BSC networks
+- **Smart Contracts**: Real ERC20 and Uniswap V2 contract interactions
 
 ### Styling & UI
 - **Tailwind CSS**: Utility-first CSS framework
@@ -56,8 +56,40 @@ A modern, production-ready Web3 dashboard built with React, TypeScript, and Ethe
 
 ### Development Tools
 - **ESLint**: Code linting and quality assurance
+- **Jest**: Comprehensive testing framework
 - **TypeScript Config**: Strict type checking configuration
-- **PostCSS**: CSS processing and optimization
+
+## 🌐 Supported Networks
+
+This application supports three testnet environments:
+
+### Sepolia Testnet (Ethereum)
+- **Chain ID**: 11155111
+- **Native Token**: ETH
+- **RPC URL**: https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161
+- **Block Explorer**: https://sepolia.etherscan.io
+- **Faucets**: 
+  - https://sepoliafaucet.com/
+  - https://faucet.sepolia.dev/
+  - https://faucet.quicknode.com/ethereum/sepolia
+
+### Manta Pacific Testnet
+- **Chain ID**: 3441006
+- **Native Token**: ETH
+- **RPC URL**: https://manta-testnet.calderachain.xyz/http
+- **Block Explorer**: https://manta-testnet.calderachain.xyz/blockscout
+- **Faucets**:
+  - https://faucet.testnet.manta.network/
+  - https://bridge.testnet.manta.network/
+
+### Lisk Sepolia Testnet
+- **Chain ID**: 4202
+- **Native Token**: ETH
+- **RPC URL**: https://rpc.sepolia-api.lisk.com
+- **Block Explorer**: https://sepolia-blockscout.lisk.com
+- **Faucets**:
+  - https://faucet.lisk.com/
+  - https://bridge.sepolia-api.lisk.com/
 
 ## 📦 Installation & Setup
 
@@ -106,142 +138,27 @@ src/
 │   ├── Dashboard.tsx        # Main dashboard layout
 │   ├── Header.tsx          # Navigation and account info
 │   ├── BalanceCard.tsx     # Balance display component
-│   ├── TokenList.tsx       # Token portfolio list
+│   ├── TokenList.tsx       # Token portfolio table
 │   ├── TransactionHistory.tsx # Transaction history
 │   ├── SendModal.tsx       # Send token modal
-│   └── SwapModal.tsx       # Token swap interface
+│   ├── SwapModal.tsx       # Token swap interface
+│   ├── TestnetFaucet.tsx   # Testnet faucet links
+│   └── NetworkStatus.tsx   # Network status display
 ├── hooks/               # Custom React hooks
-│   └── useWallet.ts        # Wallet state management
+│   ├── useWallet.ts        # Wallet state management
+│   └── useTokenOperations.ts # Token transfer/swap operations
+├── contracts/           # Smart contract ABIs
+│   ├── ERC20.ts           # ERC20 token contract ABI
+│   └── UniswapV2.ts       # Uniswap V2 router ABI
 ├── types/               # TypeScript definitions
 │   ├── web3.ts            # Web3 type definitions
 │   └── ethereum.d.ts      # Ethereum provider types
+├── __tests__/           # Test files
+│   └── contracts.test.ts   # Smart contract tests
 ├── App.tsx             # Main application component
 ├── main.tsx            # Application entry point
 └── index.css           # Global styles and Tailwind imports
 ```
-
-## 🔧 Configuration
-
-### Network Configuration
-
-The application supports multiple blockchain networks configured in `src/hooks/useWallet.ts`:
-
-```typescript
-const NETWORKS: Record<number, Network> = {
-  1: {
-    chainId: 1,
-    name: 'Ethereum Mainnet',
-    rpcUrl: 'https://eth.llamarpc.com',
-    symbol: 'ETH',
-    blockExplorer: 'https://etherscan.io'
-  },
-  137: {
-    chainId: 137,
-    name: 'Polygon',
-    rpcUrl: 'https://polygon.llamarpc.com',
-    symbol: 'MATIC',
-    blockExplorer: 'https://polygonscan.com'
-  }
-  // Add more networks as needed
-};
-```
-
-### Customizing Tokens
-
-Mock token data is configured in the `loadTokens` function. For production, integrate with:
-- **Token APIs**: CoinGecko, CoinMarketCap
-- **On-chain Data**: The Graph Protocol, Alchemy
-- **Price Feeds**: Chainlink oracles
-
-## 📱 Usage Guide
-
-### Connecting Your Wallet
-
-1. **Install MetaMask**: Download from [metamask.io](https://metamask.io)
-2. **Create/Import Wallet**: Set up your Ethereum wallet
-3. **Connect to App**: Click "Connect MetaMask" button
-4. **Approve Connection**: Confirm in MetaMask popup
-
-### Managing Tokens
-
-1. **View Portfolio**: See all tokens in the "Your Tokens" section
-2. **Check Balances**: Real-time balance updates
-3. **Price Tracking**: View price changes and trends
-
-### Sending Transactions
-
-1. **Click Send**: Use the "Send" button on balance card
-2. **Enter Details**: Recipient address and amount
-3. **Set Gas Price**: Adjust gas price for transaction speed
-4. **Confirm**: Review and confirm transaction
-
-### Token Swapping
-
-1. **Open Swap Modal**: Click "Swap" button
-2. **Select Tokens**: Choose from/to tokens
-3. **Enter Amount**: Specify swap amount
-4. **Review Rate**: Check exchange rate and fees
-5. **Execute Swap**: Confirm transaction
-
-### Network Switching
-
-1. **Click Network**: Use network dropdown in header
-2. **Select Network**: Choose from available networks
-3. **Approve Switch**: Confirm in MetaMask
-4. **Auto Refresh**: App updates with new network data
-
-## 🔒 Security Considerations
-
-### Best Practices Implemented
-
-- **No Private Key Storage**: Never stores private keys locally
-- **MetaMask Integration**: Uses secure browser wallet
-- **Transaction Signing**: All transactions signed by user
-- **Network Validation**: Validates network parameters
-- **Input Sanitization**: Validates all user inputs
-
-### Security Recommendations
-
-- **Keep MetaMask Updated**: Use latest version
-- **Verify Addresses**: Double-check recipient addresses
-- **Test Transactions**: Start with small amounts
-- **Secure Environment**: Use on trusted devices only
-- **Regular Backups**: Backup wallet seed phrases
-
-## 🎨 Design System
-
-### Color Palette
-
-```css
-/* Primary Colors */
---cyan-500: #06B6D4      /* Primary accent */
---purple-500: #8B5CF6    /* Secondary accent */
---green-500: #10B981     /* Success states */
-
-/* Background Colors */
---gray-900: #111827      /* Primary background */
---purple-900: #581C87    /* Gradient background */
---blue-900: #1E3A8A      /* Gradient background */
-
-/* Text Colors */
---white: #FFFFFF         /* Primary text */
---gray-300: #D1D5DB      /* Secondary text */
---gray-400: #9CA3AF      /* Tertiary text */
-```
-
-### Typography
-
-- **Headings**: Inter font family, bold weights
-- **Body Text**: Inter font family, regular weight
-- **Code/Addresses**: Monospace font for technical data
-- **Responsive Sizing**: Scales appropriately across devices
-
-### Component Patterns
-
-- **Glassmorphism Cards**: `bg-white/10 backdrop-blur-xl`
-- **Gradient Buttons**: Cyan to purple gradients
-- **Hover States**: Subtle scale and color transitions
-- **Loading States**: Spinner animations and disabled states
 
 ## 🧪 Testing
 
@@ -267,99 +184,106 @@ npm run test:coverage
 - Token balance and transfer operations
 - Swap quote calculations
 
-### Manual Testing Checklist
+### Testnet Testing Guide
 
-**Testnet Testing:**
-- [ ] Connect to Sepolia testnet
-- [ ] Get testnet ETH from faucet
-- [ ] Load testnet token balances
-- [ ] Send testnet ETH transaction
-- [ ] Approve and swap testnet tokens
-- [ ] View real transaction history
+**Step 1: Setup MetaMask**
+1. Install MetaMask browser extension
+2. Create or import a wallet
+3. Add the testnet networks (app will prompt to add them)
 
-**Mainnet Testing (with caution):**
+**Step 2: Get Testnet Tokens**
+1. Connect to Sepolia testnet
+2. Use the built-in faucet links to get testnet ETH
+3. Copy your wallet address using the app's copy button
+4. Visit faucet websites and request tokens
+
+**Step 3: Test Core Features**
 - [ ] Wallet connection/disconnection
-- [ ] Network switching functionality
+- [ ] Network switching between testnets
 - [ ] Balance updates and display
-- [ ] Token list rendering
-- [ ] Transaction history display
-- [ ] Send modal functionality
-- [ ] Swap modal operations
-- [ ] Responsive design testing
-- [ ] Error handling scenarios
+- [ ] Send testnet ETH transactions
+- [ ] View real transaction history
+- [ ] Token swapping (if DEX available on testnet)
 
-### Testnet Configuration
+**Step 4: Verify Transactions**
+- Check transaction hashes on block explorers
+- Verify balance changes after transactions
+- Test error handling with insufficient funds
 
-The application supports three specific testnets:
+## 🔒 Security Features
 
-**Sepolia Testnet (Ethereum)**
-- Chain ID: 11155111
-- Faucets: sepoliafaucet.com, faucet.sepolia.dev
-- Test tokens: USDC, DAI, LINK, USDT
+### Built-in Security
+- **No Private Key Storage**: Never stores private keys locally
+- **MetaMask Integration**: Uses secure browser wallet
+- **Transaction Signing**: All transactions signed by user
+- **Input Validation**: Validates all user inputs and addresses
+- **Testnet Only**: Safe testing environment without real funds
 
-**Manta Pacific Testnet**
-- Chain ID: 3441006
-- Faucets: faucet.testnet.manta.network
-- Test tokens: USDC, USDT, WETH
+### Best Practices
+- **Address Validation**: Checksums and format validation
+- **Gas Estimation**: Prevents failed transactions
+- **Error Handling**: Comprehensive error messages
+- **Network Validation**: Ensures operations are supported
 
-**Lisk Sepolia Testnet**
-- Chain ID: 4202
-- Faucets: faucet.lisk.com
-- Test tokens: USDC, USDT, LSK
+## 🎨 Design System
+
+### Color Palette
+```css
+/* Primary Colors */
+--blue-500: #3B82F6      /* Primary buttons and accents */
+--blue-600: #2563EB      /* Hover states */
+
+/* Status Colors */
+--green-500: #10B981     /* Success states and gains */
+--red-500: #EF4444       /* Error states and losses */
+--yellow-500: #F59E0B    /* Warning states */
+
+/* Background Colors */
+--gray-50: #F9FAFB       /* Page background */
+--white: #FFFFFF         /* Card backgrounds */
+
+/* Text Colors */
+--gray-900: #111827      /* Primary text */
+--gray-700: #374151      /* Secondary text */
+--gray-500: #6B7280      /* Tertiary text */
+```
+
+### Typography
+- **Headings**: Inter font family, bold weights
+- **Body Text**: Inter font family, regular weight
+- **Monospace**: For addresses and transaction hashes
+- **Responsive Sizing**: Scales appropriately across devices
 
 ## 🚀 Deployment
 
 ### Build Optimization
-
-The application is optimized for production with:
 - **Code Splitting**: Automatic route-based splitting
 - **Tree Shaking**: Removes unused code
 - **Asset Optimization**: Compressed images and fonts
 - **Bundle Analysis**: Optimized chunk sizes
 
 ### Deployment Platforms
-
-**Recommended Platforms:**
+**Recommended:**
 - **Vercel**: Zero-config deployment with Git integration
 - **Netlify**: Continuous deployment with form handling
 - **GitHub Pages**: Free hosting for static sites
 - **IPFS**: Decentralized hosting for Web3 applications
 
-### Environment Variables
-
-```bash
-# Optional: Custom RPC endpoints
-VITE_ETHEREUM_RPC_URL=your_ethereum_rpc
-VITE_POLYGON_RPC_URL=your_polygon_rpc
-
-# Optional: Analytics and monitoring
-VITE_ANALYTICS_ID=your_analytics_id
-```
-
 ## 🤝 Contributing
 
 ### Development Workflow
-
-1. **Fork Repository**: Create your own fork
-2. **Create Branch**: `git checkout -b feature/amazing-feature`
-3. **Make Changes**: Implement your feature
-4. **Test Thoroughly**: Ensure all functionality works
-5. **Submit PR**: Create pull request with description
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and test thoroughly
+4. Commit changes: `git commit -m 'Add amazing feature'`
+5. Push to branch: `git push origin feature/amazing-feature`
+6. Submit a pull request
 
 ### Code Standards
-
 - **TypeScript**: Strict type checking enabled
 - **ESLint**: Follow configured linting rules
-- **Prettier**: Consistent code formatting
-- **Component Structure**: Follow established patterns
-
-### Feature Requests
-
-- **DeFi Protocols**: Uniswap, Aave, Compound integration
-- **NFT Support**: NFT viewing and trading
-- **Advanced Charts**: Price charts and analytics
-- **Mobile App**: React Native version
-- **Hardware Wallets**: Ledger and Trezor support
+- **Testing**: Add tests for new features
+- **Documentation**: Update README for significant changes
 
 ## 📄 License
 
@@ -378,11 +302,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For support and questions:
 - **GitHub Issues**: Report bugs and request features
 - **Documentation**: Check this README for guidance
-- **Community**: Join Web3 development communities
 - **MetaMask Support**: For wallet-specific issues
 
 ---
 
-**Built with ❤️ for the Web3 community**
+**Built with ❤️ for Web3 developers and DeFi enthusiasts**
 
-*This application demonstrates modern Web3 development practices and serves as a foundation for building decentralized applications.*
+*This application demonstrates modern Web3 development practices and serves as a foundation for building decentralized applications on testnet environments.*
