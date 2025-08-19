@@ -27,18 +27,6 @@ export const TESTNET_TOKENS = {
     LINK: "0x779877A7B0D9E8603169DdbD7836e478b4624789", // Chainlink Token
     USDT: "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06", // Mock USDT
   },
-  // Manta Pacific Testnet
-  3441006: {
-    USDC: "0x123456789abcdef123456789abcdef123456789a", // Mock USDC on Manta
-    USDT: "0x123456789abcdef123456789abcdef123456789b", // Mock USDT on Manta
-    WETH: "0x123456789abcdef123456789abcdef123456789c", // Wrapped ETH on Manta
-  },
-  // Lisk Sepolia Testnet
-  4202: {
-    USDC: "0x234567890abcdef234567890abcdef234567890a", // Mock USDC on Lisk
-    USDT: "0x234567890abcdef234567890abcdef234567890b", // Mock USDT on Lisk
-    LSK: "0x234567890abcdef234567890abcdef234567890c", // Lisk Token
-  }
 };
 
 export interface TokenContract {
