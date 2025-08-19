@@ -49,17 +49,17 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
   const allTokens = [{ symbol: 'ETH', name: 'Ethereum', balance: '1.5' }, ...tokens];
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 w-full max-w-md">
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white">Swap Tokens</h2>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-2xl border border-gray-200 w-full max-w-md shadow-xl">
+        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-900">Swap Tokens</h2>
           <div className="flex items-center gap-2">
-            <button className="text-gray-400 hover:text-white transition-colors">
+            <button className="text-gray-400 hover:text-gray-600 transition-colors">
               <Settings className="w-5 h-5" />
             </button>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
@@ -68,10 +68,10 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
         
         <div className="p-6 space-y-4">
           {/* From Token */}
-          <div className="bg-white/5 rounded-2xl p-4">
+          <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-400">You pay</span>
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-gray-600">You pay</span>
+              <span className="text-sm text-gray-500">
                 Balance: {allTokens.find(t => t.symbol === fromToken)?.balance || '0'}
               </span>
             </div>
@@ -81,15 +81,15 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
                 value={fromAmount}
                 onChange={(e) => setFromAmount(e.target.value)}
                 placeholder="0.0"
-                className="flex-1 bg-transparent text-2xl text-white placeholder-gray-400 focus:outline-none"
+                className="flex-1 bg-transparent text-2xl text-gray-900 placeholder-gray-400 focus:outline-none"
               />
               <select
                 value={fromToken}
                 onChange={(e) => setFromToken(e.target.value)}
-                className="bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400"
+                className="bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500"
               >
                 {allTokens.map(token => (
-                  <option key={token.symbol} value={token.symbol} className="bg-gray-800">
+                  <option key={token.symbol} value={token.symbol} className="bg-white">
                     {token.symbol}
                   </option>
                 ))}
@@ -101,17 +101,17 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
           <div className="flex justify-center">
             <button
               onClick={flipTokens}
-              className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-full p-3 transition-colors"
+              className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-full p-3 transition-colors"
             >
-              <ArrowUpDown className="w-5 h-5 text-white" />
+              <ArrowUpDown className="w-5 h-5 text-gray-600" />
             </button>
           </div>
           
           {/* To Token */}
-          <div className="bg-white/5 rounded-2xl p-4">
+          <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-400">You receive</span>
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-gray-600">You receive</span>
+              <span className="text-sm text-gray-500">
                 Balance: {allTokens.find(t => t.symbol === toToken)?.balance || '0'}
               </span>
             </div>
@@ -121,15 +121,15 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
                 value={toAmount}
                 readOnly
                 placeholder="0.0"
-                className="flex-1 bg-transparent text-2xl text-white placeholder-gray-400 focus:outline-none"
+                className="flex-1 bg-transparent text-2xl text-gray-900 placeholder-gray-400 focus:outline-none"
               />
               <select
                 value={toToken}
                 onChange={(e) => setToToken(e.target.value)}
-                className="bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400"
+                className="bg-white border border-gray-300 rounded-xl px-3 py-2 text-gray-900 focus:outline-none focus:border-blue-500"
               >
                 {allTokens.map(token => (
-                  <option key={token.symbol} value={token.symbol} className="bg-gray-800">
+                  <option key={token.symbol} value={token.symbol} className="bg-white">
                     {token.symbol}
                   </option>
                 ))}
@@ -139,16 +139,16 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
           
           {/* Swap Details */}
           {fromAmount && (
-            <div className="bg-white/5 rounded-xl p-4 space-y-2 text-sm">
-              <div className="flex justify-between text-gray-300">
+            <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm border border-gray-200">
+              <div className="flex justify-between text-gray-700">
                 <span>Rate</span>
                 <span>1 {fromToken} = {(parseFloat(toAmount) / parseFloat(fromAmount)).toFixed(6)} {toToken}</span>
               </div>
-              <div className="flex justify-between text-gray-300">
+              <div className="flex justify-between text-gray-700">
                 <span>Slippage tolerance</span>
                 <span>{slippage}%</span>
               </div>
-              <div className="flex justify-between text-gray-300">
+              <div className="flex justify-between text-gray-700">
                 <span>Network fee</span>
                 <span>~$5.50</span>
               </div>
@@ -159,7 +159,7 @@ export function SwapModal({ isOpen, onClose, tokens }: SwapModalProps) {
           <button
             onClick={handleSwap}
             disabled={!fromAmount || isLoading}
-            className="w-full bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-600 hover:to-purple-600 disabled:from-gray-500 disabled:to-gray-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-3"
+            className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-semibold py-4 px-6 rounded-xl transition-colors flex items-center justify-center gap-3"
           >
             {isLoading ? (
               <>

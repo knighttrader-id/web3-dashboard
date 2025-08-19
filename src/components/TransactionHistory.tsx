@@ -8,20 +8,20 @@ interface TransactionHistoryProps {
 
 export function TransactionHistory({ transactions }: TransactionHistoryProps) {
   const getTransactionIcon = (type: Transaction['type'], status: Transaction['status']) => {
-    const iconClass = "w-5 h-5";
+    const iconClass = "w-4 h-4";
     
-    if (status === 'pending') return <Clock className={`${iconClass} text-yellow-400`} />;
-    if (status === 'failed') return <XCircle className={`${iconClass} text-red-400`} />;
+    if (status === 'pending') return <Clock className={`${iconClass} text-yellow-500`} />;
+    if (status === 'failed') return <XCircle className={`${iconClass} text-red-500`} />;
     
     switch (type) {
       case 'send':
-        return <ArrowUpRight className={`${iconClass} text-red-400`} />;
+        return <ArrowUpRight className={`${iconClass} text-red-500`} />;
       case 'receive':
-        return <ArrowDownLeft className={`${iconClass} text-green-400`} />;
+        return <ArrowDownLeft className={`${iconClass} text-green-500`} />;
       case 'swap':
-        return <ArrowUpDown className={`${iconClass} text-purple-400`} />;
+        return <ArrowUpDown className={`${iconClass} text-blue-500`} />;
       default:
-        return <CheckCircle className={`${iconClass} text-green-400`} />;
+        return <CheckCircle className={`${iconClass} text-green-500`} />;
     }
   };
 
@@ -35,38 +35,38 @@ export function TransactionHistory({ transactions }: TransactionHistoryProps) {
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20">
-      <div className="p-6 border-b border-white/10">
-        <h3 className="text-lg font-semibold text-white">Recent Transactions</h3>
+    <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">
+      <div className="p-6 border-b border-gray-200">
+        <h3 className="text-xl font-bold text-gray-900">Recent Transactions</h3>
       </div>
       
-      <div className="divide-y divide-white/10 max-h-96 overflow-y-auto">
+      <div className="divide-y divide-gray-100 max-h-96 overflow-y-auto">
         {transactions.map((tx) => (
-          <div key={tx.hash} className="p-4 hover:bg-white/5 transition-colors">
-            <div className="flex items-center gap-3 mb-2">
+          <div key={tx.hash} className="p-4 hover:bg-gray-50 transition-colors">
+            <div className="flex items-center gap-3 mb-3">
               {getTransactionIcon(tx.type, tx.status)}
               <div className="flex-1">
-                <p className="font-medium text-white capitalize">{tx.type}</p>
-                <p className="text-xs text-gray-400">{formatTime(tx.timestamp)}</p>
+                <p className="font-medium text-gray-900 capitalize">{tx.type}</p>
+                <p className="text-sm text-gray-500">{formatTime(tx.timestamp)}</p>
               </div>
               <div className="text-right">
                 <p className={`font-medium ${
-                  tx.type === 'receive' ? 'text-green-400' : 'text-white'
+                  tx.type === 'receive' ? 'text-green-600' : 'text-gray-900'
                 }`}>
                   {tx.type === 'receive' ? '+' : '-'}{tx.value} ETH
                 </p>
                 <p className={`text-xs ${
-                  tx.status === 'confirmed' ? 'text-green-400' :
-                  tx.status === 'pending' ? 'text-yellow-400' : 'text-red-400'
+                  tx.status === 'confirmed' ? 'text-green-600' :
+                  tx.status === 'pending' ? 'text-yellow-500' : 'text-red-500'
                 }`}>
-                  {tx.status}
+                  {tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}
                 </p>
               </div>
             </div>
             
-            <div className="flex items-center justify-between text-xs text-gray-400">
+            <div className="flex items-center justify-between text-xs text-gray-500">
               <span className="font-mono">{tx.hash}</span>
-              <button className="flex items-center gap-1 hover:text-cyan-400 transition-colors">
+              <button className="flex items-center gap-1 hover:text-blue-500 transition-colors">
                 <ExternalLink className="w-3 h-3" />
                 View
               </button>

@@ -19,7 +19,7 @@ export function Dashboard({ walletState, onDisconnect, onSwitchNetwork, networks
   const [showSwapModal, setShowSwapModal] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900">
+    <div className="min-h-screen bg-gray-50">
       <Header 
         address={walletState.address!}
         network={walletState.network}
@@ -29,26 +29,26 @@ export function Dashboard({ walletState, onDisconnect, onSwitchNetwork, networks
       />
       
       <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="space-y-8">
           {/* Balance Overview */}
-          <div className="lg:col-span-2">
+          <div>
             <BalanceCard 
               balance={walletState.balance}
               network={walletState.network}
               onSend={() => setShowSendModal(true)}
               onSwap={() => setShowSwapModal(true)}
             />
-            
-            {/* Tokens */}
-            <div className="mt-8">
-              <h2 className="text-2xl font-bold text-white mb-6">Your Tokens</h2>
-              <TokenList tokens={walletState.tokens} />
-            </div>
           </div>
           
-          {/* Transaction History */}
-          <div>
-            <TransactionHistory transactions={walletState.transactions} />
+          {/* Tokens and Transactions */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Assets</h2>
+              <TokenList tokens={walletState.tokens} />
+            </div>
+            <div>
+              <TransactionHistory transactions={walletState.transactions} />
+            </div>
           </div>
         </div>
       </main>
