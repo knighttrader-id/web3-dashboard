@@ -90,14 +90,15 @@ describe('Smart Contract Integration', () => {
   });
 
   describe('Network Configuration', () => {
-    test('should support mainnet and testnet networks', () => {
-      // Mainnet
-      expect(ROUTER_ADDRESSES[1]).toBe('0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D');
-      expect(ROUTER_ADDRESSES[137]).toBe('0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff');
-      
-      // Testnet
+    test('should support specified testnet networks only', () => {
+      // Sepolia Testnet
       expect(ROUTER_ADDRESSES[11155111]).toBe('0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D');
-      expect(ROUTER_ADDRESSES[80001]).toBe('0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff');
+      
+      // Manta Pacific Testnet
+      expect(ROUTER_ADDRESSES[3441006]).toBeDefined();
+      
+      // Lisk Sepolia Testnet
+      expect(ROUTER_ADDRESSES[4202]).toBeDefined();
     });
 
     test('should have testnet token configurations', () => {
@@ -105,9 +106,13 @@ describe('Smart Contract Integration', () => {
       expect(sepoliaTokens.USDC).toMatch(/^0x[a-fA-F0-9]{40}$/);
       expect(sepoliaTokens.DAI).toMatch(/^0x[a-fA-F0-9]{40}$/);
       
-      const mumbaiTokens = TESTNET_TOKENS[80001];
-      expect(mumbaiTokens.USDC).toMatch(/^0x[a-fA-F0-9]{40}$/);
-      expect(mumbaiTokens.WMATIC).toMatch(/^0x[a-fA-F0-9]{40}$/);
+      const mantaTokens = TESTNET_TOKENS[3441006];
+      expect(mantaTokens.USDC).toMatch(/^0x[a-fA-F0-9]{40}$/);
+      expect(mantaTokens.WETH).toMatch(/^0x[a-fA-F0-9]{40}$/);
+      
+      const liskTokens = TESTNET_TOKENS[4202];
+      expect(liskTokens.USDC).toMatch(/^0x[a-fA-F0-9]{40}$/);
+      expect(liskTokens.LSK).toMatch(/^0x[a-fA-F0-9]{40}$/);
     });
   });
 });

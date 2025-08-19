@@ -45,6 +45,7 @@ export function NetworkStatus({ network }: NetworkStatusProps) {
   if (!network) return null;
 
   const isTestnet = [11155111, 80001, 97].includes(network.chainId);
+  const isTestnet = [11155111, 3441006, 4202].includes(network.chainId);
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-4">

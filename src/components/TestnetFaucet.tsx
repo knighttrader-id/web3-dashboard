@@ -15,19 +15,18 @@ const FAUCET_URLS = {
       'https://faucet.quicknode.com/ethereum/sepolia'
     ]
   },
-  80001: { // Mumbai
-    name: 'Mumbai Faucet',
+  3441006: { // Manta Pacific Testnet
+    name: 'Manta Pacific Testnet Faucet',
     urls: [
-      'https://faucet.polygon.technology/',
-      'https://mumbaifaucet.com/',
-      'https://faucet.quicknode.com/polygon/mumbai'
+      'https://faucet.testnet.manta.network/',
+      'https://bridge.testnet.manta.network/'
     ]
   },
-  97: { // BSC Testnet
-    name: 'BSC Testnet Faucet',
+  4202: { // Lisk Sepolia Testnet
+    name: 'Lisk Sepolia Testnet Faucet',
     urls: [
-      'https://testnet.binance.org/faucet-smart',
-      'https://faucet.quicknode.com/bsc/testnet'
+      'https://faucet.lisk.com/',
+      'https://bridge.sepolia-api.lisk.com/'
     ]
   }
 };

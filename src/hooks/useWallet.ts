@@ -4,13 +4,6 @@ import type { WalletState, Network, Token, Transaction } from '../types/web3';
 import { ERC20_ABI, TESTNET_TOKENS } from '../contracts/ERC20';
 
 const NETWORKS: Record<number, Network> = {
-  1: {
-    chainId: 1,
-    name: 'Ethereum Mainnet',
-    rpcUrl: 'https://eth.llamarpc.com',
-    symbol: 'ETH',
-    blockExplorer: 'https://etherscan.io'
-  },
   11155111: {
     chainId: 11155111,
     name: 'Sepolia Testnet',
@@ -18,33 +11,19 @@ const NETWORKS: Record<number, Network> = {
     symbol: 'ETH',
     blockExplorer: 'https://sepolia.etherscan.io'
   },
-  137: {
-    chainId: 137,
-    name: 'Polygon',
-    rpcUrl: 'https://polygon.llamarpc.com',
-    symbol: 'MATIC',
-    blockExplorer: 'https://polygonscan.com'
+  3441006: {
+    chainId: 3441006,
+    name: 'Manta Pacific Testnet',
+    rpcUrl: 'https://manta-testnet.calderachain.xyz/http',
+    symbol: 'ETH',
+    blockExplorer: 'https://manta-testnet.calderachain.xyz/blockscout'
   },
-  80001: {
-    chainId: 80001,
-    name: 'Mumbai Testnet',
-    rpcUrl: 'https://rpc-mumbai.maticvigil.com',
-    symbol: 'MATIC',
-    blockExplorer: 'https://mumbai.polygonscan.com'
-  },
-  56: {
-    chainId: 56,
-    name: 'BSC',
-    rpcUrl: 'https://bsc.llamarpc.com',
-    symbol: 'BNB',
-    blockExplorer: 'https://bscscan.com'
-  },
-  97: {
-    chainId: 97,
-    name: 'BSC Testnet',
-    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-    symbol: 'BNB',
-    blockExplorer: 'https://testnet.bscscan.com'
+  4202: {
+    chainId: 4202,
+    name: 'Lisk Sepolia Testnet',
+    rpcUrl: 'https://rpc.sepolia-api.lisk.com',
+    symbol: 'ETH',
+    blockExplorer: 'https://sepolia-blockscout.lisk.com'
   }
 };
 
@@ -95,6 +74,7 @@ export function useWallet() {
       await loadTransactions(address);
     } catch (error) {
       console.error('Failed to connect wallet:', error);
+      alert('Failed to connect wallet. Please make sure you have MetaMask installed and try again.');
       setWalletState(prev => ({ ...prev, isConnecting: false }));
     }
   }, []);

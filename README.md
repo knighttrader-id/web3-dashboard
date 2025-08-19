@@ -290,22 +290,22 @@ npm run test:coverage
 
 ### Testnet Configuration
 
-The application supports multiple testnets:
+The application supports three specific testnets:
 
 **Sepolia Testnet (Ethereum)**
 - Chain ID: 11155111
 - Faucets: sepoliafaucet.com, faucet.sepolia.dev
-- Test tokens: USDC, DAI, LINK
+- Test tokens: USDC, DAI, LINK, USDT
 
-**Mumbai Testnet (Polygon)**
-- Chain ID: 80001
-- Faucets: faucet.polygon.technology
-- Test tokens: USDC, DAI, WMATIC
+**Manta Pacific Testnet**
+- Chain ID: 3441006
+- Faucets: faucet.testnet.manta.network
+- Test tokens: USDC, USDT, WETH
 
-**BSC Testnet**
-- Chain ID: 97
-- Faucets: testnet.binance.org/faucet-smart
-- Test tokens: USDT, BUSD, CAKE
+**Lisk Sepolia Testnet**
+- Chain ID: 4202
+- Faucets: faucet.lisk.com
+- Test tokens: USDC, USDT, LSK
 
 ## 🚀 Deployment
 
