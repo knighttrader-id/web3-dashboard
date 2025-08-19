@@ -14,7 +14,7 @@ export function TokenList({ tokens }: TokenListProps) {
           <div>Crypto Name</div>
           <div className="text-right">Last Price</div>
           <div className="text-right">24h Change</div>
-          <div className="text-right">Action</div>
+          <div className="text-right">24h Change</div>
         </div>
       </div>
       
@@ -45,9 +45,11 @@ export function TokenList({ tokens }: TokenListProps) {
               </div>
               
               <div className="text-right">
-                <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                  Buy
-                </button>
+                {Math.random() > 0.5 ? (
+                  <span className="text-green-600 font-medium">+{(Math.random() * 10).toFixed(2)}%</span>
+                ) : (
+                  <span className="text-red-600 font-medium">-{(Math.random() * 5).toFixed(2)}%</span>
+                )}
               </div>
             </div>
           </div>

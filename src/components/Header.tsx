@@ -32,12 +32,7 @@ export function Header({ address, network, networks, onDisconnect, onSwitchNetwo
             <div className="bg-blue-500 p-2 rounded-xl">
               <Network className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">CryptoExchange</h1>
-            <nav className="hidden md:flex items-center gap-6 ml-8">
-              <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Marketplace</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Trading</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 font-medium">Portfolio</a>
-            </nav>
+            <h1 className="text-2xl font-bold text-gray-900">Web3 Wallet</h1>
           </div>
 
           <div className="flex items-center gap-4">
